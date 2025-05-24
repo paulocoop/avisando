@@ -1,14 +1,14 @@
-import { GoMegaphone } from "react-icons/go";
+import { useIntersectionObserver } from "@uidotdev/usehooks";
+import Navbar from "./Navbar";
+import Hero from "./Hero";
 
 export default function Header() {
+    const [ref, entry] = useIntersectionObserver({ threshold: 0.25});
     return (
-        <div className="navbar bg-white/20">
-            <div className="navbar-start">
-                <a href="/" className="btn btn-ghost text-xl">
-                    <GoMegaphone className="size-6" />
-                    Avisan.do
-                </a>
-            </div>
-        </div>
+        <>
+        {!entry?.isIntersecting && (<Navbar sticky={true} />)}
+        <Hero ref={ref} />
+        {entry?.isIntersecting && (<Navbar sticky={false} />)}
+        </>
     )
 }

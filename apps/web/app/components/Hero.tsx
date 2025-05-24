@@ -1,7 +1,9 @@
+/* eslint-disable react/display-name */
+import { forwardRef } from "react";
 import { FaEnvelope, FaArrowRight } from "react-icons/fa";
-export default function Hero() {
-    return (
-        <div className="hero bg-white/20 shadow-lg w-screen">
+
+const  Hero = forwardRef<HTMLDivElement>((_props, ref) => (
+        <div ref={ref} className="hero bg-white/20 shadow-lg w-screen">
             <div className="hero-content flex-col lg:flex-row gap-5">
                 <div className="bg-[url('/images/hero.jpg')] bg-no-repeat bg-cover bg-left-bottom w-[60vw] h-[60vh]  grayscale hover:filter-none"></div>
                 <div className="flex flex-col justify-center gap-3">
@@ -24,16 +26,6 @@ export default function Hero() {
                             <p>
                                 Avisan.do es un proyecto comunitario que busca ponerle fecha y lugar a los casos de
                                 violencia fascista por parte de oficiales publicos y privados.
-                            </p>
-                        </div>
-                    </div>
-                    <div className="chat chat-start">
-                        <div className="chat-bubble chat-bubble-secondary grayscale hover:filter-none">
-                            <p>
-                                Hacemos llamado al pueblo para que nos ayuden compartiendo casos de violencia
-                                contra personal vulnerables, activistas y ciudadanos comunes por parte de 
-                                organizaciones paramilitares, bandas fascistas, oficiales de la policia, migracion
-                                u otra oficina de la ley que usan de su poder.
                             </p>
                         </div>
                     </div>
@@ -65,4 +57,6 @@ export default function Hero() {
             </div>
         </div>
     )
-}
+);
+
+export default Hero;

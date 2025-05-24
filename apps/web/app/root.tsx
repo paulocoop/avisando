@@ -7,9 +7,9 @@ import {
 } from "@remix-run/react";
 import { Analytics } from "@vercel/analytics/react";
 import './app.css';
-import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Hero from "./components/Hero";
+import Header from "./components/Header";
+
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -21,7 +21,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className="bg-black/80">
-        <Hero />
         <Header />
         <main className="w-full min-h-screen py-3">
           {children}
