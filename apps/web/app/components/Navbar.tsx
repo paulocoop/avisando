@@ -12,7 +12,7 @@ export default function Navbar({ sticky }: NavbarProps) {
             <div className="navbar-start gap-5">
                 <a href="/" className="btn btn-ghost hover:bg-transparent">
                     <GoMegaphone className="size-6" />
-                    <p>Avisan.do</p>
+                    <p className="hidden sm:contents">Avisan.do</p>
                 </a>
             </div>
             <div className="navbar-end">
@@ -21,16 +21,16 @@ export default function Navbar({ sticky }: NavbarProps) {
                         <div className="status status-success animate-ping"></div>
                         <div className="status status-success"></div>
                     </div>
-                    Estamos en linea!
+                    <p className="hidden sm:contents">Estamos en linea!</p>
                     <div className="badge badge-primary">100+</div>
                 </button>
                 <div className="dropdown">
                     <summary className="btn bg-transparent hover:bg-transparent m-1">
                         <ReactCountryFlag countryCode="DO"/>
-                        Espanol
+                        <p className="hidden sm:contents">Espanol</p>
                         <FaCaretDown />
                     </summary>
-                    <ul className="menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+                    <ul className="menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 shadow-md">
                         <li><a>English</a></li>
                         <li><a>Kreyol</a></li>
                     </ul>
