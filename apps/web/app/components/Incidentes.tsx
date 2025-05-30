@@ -1,24 +1,36 @@
-import type { Incidente } from "airtable/incidentes"
-import { FaArrowRight, FaShareAlt } from "react-icons/fa"
+import { FaArrowRight, FaShareAlt, FaExternalLinkAlt } from "react-icons/fa"
 import { IoIosPin, IoMdDownload } from "react-icons/io"
 import ClientOnly from "./ClientOnly"
+import type { Prensa, Incidente } from "airtable/fields"
 
 type IncidentesProp = {
     incidentes: Incidente[]
+    prensa: Prensa[]
 }
 
-function IncidenteDate({ fecha }: { fecha: string }) {
+export function IncidenteDate({ fecha }: { fecha: string }) {
     const date = new Date(fecha);
     return (
-        <div className="w-28 min-w-28 font-thin opacity-50 tabular-nums text-center justify-center items-center">
-            <h1 className="text-5xl flex-1">{date.getDay() + 1}</h1>
+        <div className="w-28 min-w-28 h-fit font-thin opacity-50 tabular-nums text-center flex flex-col items-center justify-center">
+            <h1 className="text-5xl">{date.getDay() + 1}</h1>
             <p className="text-2xl">{date.toLocaleString('default', { month: 'long' })}</p>
             <p className="text-lg">{date.getFullYear()}</p>
         </div>
     )
 }
 
-export default function Incidentes({ incidentes }: IncidentesProp) {
+function onShare(inc: Incidente) {
+    const shareData = {
+        title: inc.Incidente,
+        text: inc["Breve resumen"],
+        url: inc["Fuente URL"],
+    };
+
+    // return navigator.canShare(shareData) || navigator.share(shareData);
+    return navigator.share(shareData);
+}
+
+export default function Incidentes({ incidentes, prensa }: IncidentesProp) {
     return (<ul className="flex flex-col gap-5 overflow-y-scroll overflow-x-hidden">
 
         {incidentes.map((inc) => (
@@ -27,7 +39,7 @@ export default function Incidentes({ incidentes }: IncidentesProp) {
                 <ClientOnly>
                     <IncidenteDate fecha={inc.Fecha} />
                 </ClientOnly>
-                <div className="gap-2 h-52 sm:h-auto">
+                <div className="flex flex-col gap-2 max-h-60 sm:h-auto justify-start items-start content-start">
                     <h3 className="font-bold text-wrap">{inc.Incidente}</h3>
                     {inc["Locación"] && (
                         <a target="_blank" href={inc["Enlace GMaps"]} className="btn btn-link text-white p-0 truncate" rel="noreferrer">
@@ -36,6 +48,7 @@ export default function Incidentes({ incidentes }: IncidentesProp) {
                         </a>
                     )}
                     <div className="absolute bottom-1 left-2 sm:relative flex flex-row gap-1 py-3">
+                        {inc["Etiquetas"]}
                         <a className="btn btn-xs bg-white/50">Rapto</a>
                         <a className="btn btn-xs bg-white/50">Disrupcion de la paz</a>
                         <a className="btn btn-xs bg-white/50">Violencia</a>
@@ -45,14 +58,16 @@ export default function Incidentes({ incidentes }: IncidentesProp) {
                             <span className="hidden sm:contents">Detalles</span>
                             <FaArrowRight className="size-4" />
                         </a>
-                        <a className="btn btn-ghost btn-sm" href={`/entries/${inc.id}`}>
+                        <button className="btn btn-ghost btn-sm" onClick={() => onShare(inc)}>
                             <span className="hidden sm:contents">Comparte</span>
                             <FaShareAlt className="size-4" />
-                        </a>
-                        <a className="btn btn-ghost btn-sm" href={`/entries/${inc.id}`}>
-                            <span className="hidden sm:contents">Descarga</span>
-                            <IoMdDownload className="size-4" />
-                        </a>
+                        </button>
+                        {inc["Fuente URL"] && (
+                            <a className="btn btn-ghost btn-sm" target="_blank" href={inc["Fuente URL"]} rel="noreferrer">
+                                <span className="hidden sm:contents">Ver original</span>
+                                <FaExternalLinkAlt className="size-4" />
+                            </a>
+                        )}
                     </div>
                 </div>
 
