@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "./leaflet.css";
 
 @plugin "daisyui";
 @plugin "daisyui/theme" {

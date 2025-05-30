@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 import { forwardRef } from "react";
-import { FaEnvelope, FaArrowRight } from "react-icons/fa";
+import { FaEnvelope, FaArrowRight, FaFacebook } from "react-icons/fa";
 
 const  Hero = forwardRef<HTMLDivElement>((_props, ref) => (
         <div ref={ref} className="hero bg-white/20 shadow-lg w-screen">
@@ -32,26 +32,15 @@ const  Hero = forwardRef<HTMLDivElement>((_props, ref) => (
                      <div className="chat chat-start">
                         <div className="chat-bubble chat-bubble-secondary grayscale hover:filter-none focus:filter-none">
                             <p>
-                                Tienes algo que reportar?
+                                Riega la voz
                             </p>
                         </div>
                     </div>
                     <div className="chat chat-end">
                         <div className="chat-bubble chat-bubble-secondary grayscale hover:filter-none focus:filter-none">
-                            <p className="animate animate-bounce">
-                                ...
-                            </p>
+                            <FaFacebook className="size-8" />
+
                         </div>
-                    </div>
-                    <div className="w-full flex justify-center text-black">
-                        <label className="input w-full rounded-full text-black grayscale hover:filter-none focus:filter-none">
-                            <FaEnvelope className="text-secondary" />
-                            <input type="email" placeholder="Dejanos tu correo para ponernos en contacto!" />
-                            <button className="btn btn-ghost text-secondary rounded-e-full">
-                                Enviar!
-                                <FaArrowRight />
-                            </button>
-                        </label>
                     </div>
                 </div>
             </div>
