@@ -27,7 +27,10 @@ export default function Index() {
   const markers = useMemo(() => incidentes.map(inc => ({
     id: inc.id,
     position: extractCoordinatesFromGoogleMapsUrl(inc["Enlace GMaps"]),
-    popup: (<>{inc.Incidente}</>)
+    popup: (<a href={`/entries/${inc.id}`} className="btn btn-link text-black p-0 text-clip">
+      {inc["Incidente"]}
+      <FaArrowRight className="size-5" />
+    </a>)
   })).filter(m => m.position !== null), [incidentes])
   return (
     <div className="flex flex-col gap-4">
@@ -38,7 +41,7 @@ export default function Index() {
       </div>
       <div className="flex flex-col lg:flex-row w-full lg:h-screen gap-5 lg:gap-1">
         <ClientOnly>
-          <Map className="w-full h-96 lg:w-lvw lg:h-full z-1 grayscale-50 " markers={markers} />
+          <Map className="w-full h-96 lg:w-lvw lg:h-full z-1 grayscale-50" markers={markers} />
         </ClientOnly>
         <div className="z-auto overflow-x-clip overflow-y-scroll flex flex-coljustify-end px-5">
 
