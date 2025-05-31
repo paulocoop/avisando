@@ -23,9 +23,9 @@ function onShare(inc: Incidente) {
     const shareData = {
         title: inc.Incidente,
         text: inc["Breve resumen"],
-        url: inc["Fuente URL"],
+        url: `${window.location.protocol}//${window.location.host}/entries/${inc.id}`
     };
-
+    console.log(shareData);
     // return navigator.canShare(shareData) || navigator.share(shareData);
     return navigator.share(shareData);
 }
@@ -42,13 +42,13 @@ export default function Incidentes({ incidentes, prensa }: IncidentesProp) {
                 <div className="flex flex-col gap-2 max-h-60 sm:h-auto justify-start items-start content-start">
                     <h3 className="font-bold text-wrap">{inc.Incidente}</h3>
                     {inc["Locación"] && (
-                        <a target="_blank" href={inc["Enlace GMaps"]} className="btn btn-link text-white p-0 truncate" rel="noreferrer">
+                        <a target="_blank" href={inc["Enlace GMaps"]} className="btn btn-link text-white p-0 text-clip" rel="noreferrer">
                             <IoIosPin className="size-5" />
                             {inc["Locación"]}
                         </a>
                     )}
                     <div className="absolute bottom-1 left-2 sm:relative flex flex-row gap-1 py-3">
-                        {inc["Etiquetas"]}
+                        {/* {inc["Etiquetas"]} */}
                         <a className="btn btn-xs bg-white/50">Rapto</a>
                         <a className="btn btn-xs bg-white/50">Disrupcion de la paz</a>
                         <a className="btn btn-xs bg-white/50">Violencia</a>
