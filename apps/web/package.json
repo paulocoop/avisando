@@ -15,7 +15,7 @@
     "@tailwindcss/vite": "^4.1.7",
     "@types/react-leaflet": "^2.8.3",
     "@uidotdev/usehooks": "^2.4.1",
-    "@vercel/analytics": "^1.2.2",
+    "@vercel/analytics": "^1.5.0",
     "@vercel/remix": "2.10.0",
     "airtable": "^0.12.2",
     "daisyui": "^5.0.37",
