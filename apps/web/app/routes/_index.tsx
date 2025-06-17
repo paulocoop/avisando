@@ -19,19 +19,20 @@ export const meta: MetaFunction = () => {
 export async function loader() {
   const prensa = await prensaTable.list();
   const incidentes = await incidentesTable.list();
+
+  return json({ incidentes, prensa });
+}
+
+export default function Index() {
+  const { incidentes, prensa } = useLoaderData<typeof loader>();
   const markers = incidentes.map(inc => ({
     id: inc.id,
     position: extractCoordinatesFromGoogleMapsUrl(inc["Enlace GMaps"]),
-    popup: (<a href={`/entries/${inc.id}`} className="btn btn-link text-black p-0 text-clip">
+    popup: inc.Incidente && (<a href={`/entries/${inc.id}`} className="btn btn-link text-black p-0 text-clip">
       {inc["Incidente"]}
       <FaArrowRight className="size-5" />
     </a>)
   })).filter(m => m.position !== null);
-  return json({ incidentes, markers, prensa });
-}
-
-export default function Index() {
-  const { incidentes, markers, prensa } = useLoaderData<typeof loader>();
   return (
     <div className="flex flex-col gap-4">
       <div className="divider">
@@ -52,7 +53,26 @@ export default function Index() {
         <span className="text-xl">
           Nuestras fuentes
         </span>
-        
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 grid-flow-row-dense gap-5 p-5">
+        {prensa && prensa.map(p => (
+          <div key={p.id} className="card bg-white/20 rounded-lg">
+            <div className="card-body">
+              <div className="card-title">
+                {p["Nombre"]}
+                
+              </div>
+              <div className="flex gap-1">
+                {p["Etiquetas de la prensa"] && Array.from(p["Etiquetas de la prensa"]).map(p => (
+                  <a key={p} className="btn btn-xs bg-white/50">{p}</a>
+                ))}
+              </div>
+              <div className="card-actions justify-between">
+
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
