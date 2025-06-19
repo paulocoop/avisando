@@ -6,9 +6,9 @@ export default function Header() {
     const [ref, entry] = useIntersectionObserver({ threshold: 0.25});
     return (
         <>
-        {!entry?.isIntersecting && (<Navbar sticky={true} />)}
+        <Navbar></Navbar>
         <Hero ref={ref} />
-        {entry?.isIntersecting && (<Navbar sticky={false} />)}
+
         </>
     )
 }
