@@ -1,76 +1,85 @@
 import { useLoaderData } from "@remix-run/react";
 import { json, type LoaderFunctionArgs, type MetaFunction } from "@vercel/remix";
 import { find } from "airtable/incidentes";
-import { FaBook } from "react-icons/fa6";
-import { IoIosPin } from "react-icons/io";
-import { IoCamera } from "react-icons/io5";
-import { LoremIpsum } from 'react-lorem-ipsum';
-import ClientOnly from "~/components/ClientOnly";
-import { Map } from "~/components/Map.client";
+import {  findAllByIds as findFuentes } from "airtable/fuentes";
+import { Map } from "../components/Map.client";
 import { extractCoordinatesFromGoogleMapsUrl } from "~/lib/maps";
+import ClientOnly from "~/components/ClientOnly";
+import { FaLocationPin, FaLocationPinLock, FaMapLocation } from "react-icons/fa6";
+import { FaExternalLinkAlt, FaLocationArrow } from "react-icons/fa";
+import { Etiqueta } from "~/components/Etiqueta";
 
-export const config = { runtime: "edge" };
+// export const config = { runtime: "edge" };
 
 export const meta: MetaFunction = () => [{ title: "Detalles de incidente" }];
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const id = params.handle || "";
   const incidente = await find(id);
-  return json({ incidente }, { status: incidente ? 200 : 404 });
+  const fuentes = incidente?.["Fuentes por incidente"] ? (await findFuentes(Array.from(incidente?.["Fuentes por incidente"]))) : []
+  return json({ incidente, fuentes }, { status: incidente ? 200 : 404 });
 
 }
 
 export default function Edge() {
-  const { incidente } = useLoaderData<typeof loader>()
+  const { incidente, fuentes } = useLoaderData<typeof loader>()
   const position = extractCoordinatesFromGoogleMapsUrl(incidente?.["Enlace GMaps"] ?? "")
+  const date = new Date(incidente?.Fecha ?? "");
   return (
-    <div className="flex flex-col gap-5 justify-center items-center content-center py-10 px-5">
-      <h1 className="text-4xl">{incidente?.Incidente}</h1>
-      <div className="flex flex-row gap-3 justify-center mb-5">
-        <button className="kbd bg-white/50">Abuso sexual</button>
-        <button className="kbd bg-white/50">Extorsion</button>
-        <button className="kbd bg-white/50">Impunidad</button>
-      </div>
-      <div className="flex flex-col gap-5 px-5">
-        <div className="divider">
-          <h1 className="text-4xl text-center">Resumen</h1>
-        </div>
-        <div className="flex flex-col lg:flex-row gap-4">
-          <div className="w-full">
-            <p dangerouslySetInnerHTML={{ __html: incidente?.["Breve resumen"] ?? "" }}></p>
-          </div>
-           
-        </div>
-      </div>
-      <div className="flex flex-col gap-5 px-5 ">
-        <div className="divider">
-          <h1 className="text-4xl text-center">Ubicacion</h1>
-        </div>
+    <div className="flex flex-col gap-3">
+      <div className="relative pb-24">
         <ClientOnly>
-            <Map className="w-screen h-lvh z-1 grayscale-50" center={position} markers={[{ position, id: incidente?.id ?? "" }]} />
+          <Map className="w-screen h-96" zoom={11} center={position} markers={[{ position, id: incidente?.id ?? "", popup: <></> }]} />
         </ClientOnly>
-      </div>
-      <div className="flex flex-col gap-5">
-        <div className="divider">
-          <h1 className="text-4xl text-center">Galeria</h1>
-        </div>
-        <div className="flex flex-row gap-3 flex-wrap justify-center">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="card w-96 shadow-sm grayscale hover:filter-none">
-              <figure>
-                <img
-                  src="/images/hero.jpg"
-                  alt="Shoes" />
-              </figure>
-              {/* <div className="card-body">
-              <h2 className="card-title">Card Title</h2>
-              <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-              <div className="card-actions justify-end">
-                <button className="btn btn-ghost">Descargar</button>
-              </div>
-            </div> */}
+        <div className="absolute bottom-0 z-[1000] bg-black p-5 ms-5 me-10 space-y-1">
+          <h3 className="font-bold text-md capitalize">{date.toLocaleString('default', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          })}</h3>
+          <h1 className="font-thin text-2xl">{incidente?.Incidente}</h1>
+          <div className="flex items-center content-center gap-2">
+            <FaLocationPin className="size-4" />
+            <p className="font-semibold text-xs">{incidente?.Locación}</p>
+          </div>
+          {incidente?.Etiquetas && (
+            <div className="sm:relative flex flex-row gap-2 py-3">
+              {Array.from(incidente?.Etiquetas).map(e => (
+                <Etiqueta key={e} id={e} />
+              ))}
             </div>
-          ))}
+          )}
+
+        </div>
+      </div>
+      <div className="flex flex-col p-5 gap-5 lg:flex-row lg:justify-between">
+        <article className="prose" dangerouslySetInnerHTML={{ __html: incidente?.["Breve resumen"] ?? "" }} ></article>
+        <div className="flex flex-col justify-start gap-5">
+          {incidente?.["Implicados / Actores"] && (
+            <div className="space-y-5">
+              <h3 className="font-bold">Involucrados</h3>
+              <p>{incidente["Implicados / Actores"]}</p>
+            </div>
+          )}
+          {fuentes && fuentes.length > 0 && (
+            <div className="space-y-5">
+              <h3 className="font-bold">Fuentes</h3>
+              <div className="flex flex-col gap-2">
+                {fuentes.map(f => (
+                  <div key={f.id} className="w-full">
+                    <a href={f["Fuente URL"]} target="_blank" rel="noreferrer">
+                      <div className="flex gap-2">
+                        <p>{f.Titulo}</p>
+                        <FaExternalLinkAlt className="size-4" />
+                      </div>
+                    </a>
+                    <div className="divider divider-white"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

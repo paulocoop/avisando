@@ -12,6 +12,7 @@
     "@remix-run/node": "2.10.0",
     "@remix-run/react": "2.10.0",
     "@remix-run/server-runtime": "2.10.0",
+    "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.1.7",
     "@types/react-leaflet": "^2.8.3",
     "@uidotdev/usehooks": "^2.4.1",
