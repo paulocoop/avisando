@@ -6,7 +6,7 @@ import { Map } from "../components/Map.client";
 import { extractCoordinatesFromGoogleMapsUrl } from "~/lib/maps";
 import ClientOnly from "~/components/ClientOnly";
 import { FaLocationPin, FaLocationPinLock, FaMapLocation } from "react-icons/fa6";
-import { FaExternalLinkAlt, FaLocationArrow } from "react-icons/fa";
+import { FaArrowLeft, FaExternalLinkAlt, FaLocationArrow } from "react-icons/fa";
 import { Etiqueta } from "~/components/Etiqueta";
 
 // export const config = { runtime: "edge" };
@@ -32,12 +32,14 @@ export default function Edge() {
           <Map className="w-screen h-96" zoom={11} center={position} markers={[{ position, id: incidente?.id ?? "", popup: <></> }]} />
         </ClientOnly>
         <div className="absolute bottom-0 z-[1000] bg-black p-5 ms-5 me-10 space-y-1">
-          <h3 className="font-bold text-md capitalize">{date.toLocaleString('default', {
+          <a href="/" className="font-bold text-md capitalize">
+            <FaArrowLeft className="size-4 me-2 inline-block" />
+            {date.toLocaleString('default', {
             weekday: 'long',
             year: 'numeric',
             month: 'long',
             day: 'numeric'
-          })}</h3>
+          })}</a>
           <h1 className="font-thin text-2xl">{incidente?.Incidente}</h1>
           <div className="flex items-center content-center gap-2">
             <FaLocationPin className="size-4" />

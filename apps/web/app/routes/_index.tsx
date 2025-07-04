@@ -8,6 +8,8 @@ import { useLoaderData } from "@remix-run/react";
 import Incidentes from "~/components/Incidentes";
 import { extractCoordinatesFromGoogleMapsUrl } from "~/lib/maps";
 import { useMemo } from "react";
+import Hero from "~/components/Hero";
+import { IncidenteCard } from "~/components/Incidente";
 
 export const meta: MetaFunction = () => {
   return [
@@ -34,44 +36,14 @@ export default function Index() {
     </a>)
   })).filter(m => m.position !== null);
   return (
-    <div className="flex flex-col gap-4">
-      <div className="divider">
-        <span className="text-xl">
-          Incidentes destacados
-        </span>
-      </div>
-      <div className="flex flex-col lg:flex-row w-full lg:h-screen gap-5 lg:gap-1">
-        <ClientOnly>
-          <Map className="w-full h-96 lg:w-lvw lg:h-full z-1 grayscale-50" markers={markers} />
-        </ClientOnly>
-        <div className="z-auto overflow-x-clip overflow-y-scroll flex flex-coljustify-end px-5">
-
-          <Incidentes incidentes={incidentes} prensa={prensa} />
-        </div>
-      </div>
-      <div className="divider">
-        <span className="text-xl">
-          Nuestras fuentes
-        </span>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 grid-flow-row-dense gap-5 p-5">
-        {prensa && prensa.map(p => (
-          <div key={p.id} className="card bg-white/20 rounded-lg">
-            <div className="card-body">
-              <div className="card-title">
-                {p["Nombre"]}
-                
-              </div>
-              <div className="flex gap-1">
-                {p["Etiquetas de la prensa"] && Array.from(p["Etiquetas de la prensa"]).map(p => (
-                  <a key={p} className="btn btn-xs bg-white/50">{p}</a>
-                ))}
-              </div>
-              <div className="card-actions justify-between">
-
-              </div>
-            </div>
-          </div>
+    <div className="flex flex-col">
+      <Hero />
+      <ClientOnly>
+        <Map className="w-screen h-96 lg:h-lhv z-1 grayscale-50" markers={markers} />
+      </ClientOnly>
+      <div className="flex flex-row flex-wrap justify-center p-5 gap-5 bg-white">
+        {incidentes.map(incidente => (
+          <IncidenteCard key={incidente.id} incidente={incidente} />
         ))}
       </div>
     </div>
