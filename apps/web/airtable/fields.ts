@@ -1,6 +1,6 @@
 import { type FieldSet, type Record as AirtableRecord } from "airtable";
 
-export const INCIDENTES_FIELDS = [ 'Incidente', 'Fecha', 'Breve resumen', 'Fuente Principal', 'Fuente URL', 'Fuentes por incidente', 'Enlace GMaps', 'Locación', 'Implicados / Actores', 'Etiquetas'] as const;
+export const INCIDENTES_FIELDS = [ 'Incidente', 'Fecha', 'Breve resumen', 'Fuentes por incidente', 'Enlace GMaps', 'Locación', 'Implicados / Actores', 'Etiquetas'] as const;
 export const PRENSA_FIELDS = ['Nombre', 'Principal (Nombre)', 'Instagram', 'YouTube', 'WWW', 'Etiquetas de la prensa'] as const;
 export const ETIQUETAS_FIELDS =['Nombre', 'Descripción'] as const;
 export const FUENTES_FIELDS =['Titulo', 'Fuente URL'] as const;

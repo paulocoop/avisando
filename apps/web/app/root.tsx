@@ -21,9 +21,9 @@ export async function loader() {
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const { etiquetas } = useLoaderData<typeof loader>();
+  const data = useLoaderData<typeof loader>();
   return (
-    <EtiquetasContext.Provider value={{ etiquetas }}>
+    <EtiquetasContext.Provider value={data}>
       <html lang="en">
         <head>
           <meta charSet="utf-8" />
